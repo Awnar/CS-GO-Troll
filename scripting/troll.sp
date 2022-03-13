@@ -18,23 +18,19 @@ int t_Target[MAXPLAYERS+1];
 
 public void OnPluginStart()
 {
-	RegAdminCmd("sm_troll", CMD_troll, ADMFLAG_ROOT);
-	RegAdminCmd("sm_troll_reset", CMD_reset, ADMFLAG_ROOT);
-	RegAdminCmd("sm_troll_info", CMD_info, ADMFLAG_ROOT);
+	RegAdminCmd("sm_troll", CMD_Troll, ADMFLAG_ROOT);
+	RegAdminCmd("sm_troll_reset", CMD_Reset, ADMFLAG_ROOT);
+	RegAdminCmd("sm_troll_info", CMD_Info, ADMFLAG_ROOT);
 	cheaters = new StringMap();
 }
 
-////////////////////////////////////////////////////
-//commands
-////////////////////////////////////////////////////
-
-public Action CMD_reset(int client, int args)
+public Action CMD_Reset(int client, int args)
 {
 	cheaters.Clear();
 	return Plugin_Handled;
 }
 
-public Action CMD_info(int client, int args)
+public Action CMD_Info(int client, int args)
 {
 	PrintToConsole(client, "%i graczy", cheaters.Size);
 	StringMapSnapshot tmp = cheaters.Snapshot();
@@ -54,7 +50,7 @@ public Action CMD_info(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action CMD_troll(int client, int args)
+public Action CMD_Troll(int client, int args)
 {
 	if(client == 0 || !IsClientInGame(client))
 		return Plugin_Handled;
@@ -84,11 +80,11 @@ public Action CMD_troll(int client, int args)
 		} 
 		else if(StrEqual(arg1, "info"))
 		{
-			CMD_info(client, 0);
+			CMD_Info(client, 0);
 		} 
 		else if(StrEqual(arg1, "reset"))
 		{
-			CMD_reset(client, 0);
+			CMD_Reset(client, 0);
 		}
 	}
 	else
@@ -116,15 +112,11 @@ public Action CMD_troll(int client, int args)
 	return Plugin_Handled;
 }
 
-////////////////////////////////////////////////////
-//Menu
-////////////////////////////////////////////////////
-
 public Players(int client)
 {
-	    Menu playerMenu = new Menu(Handle_PlayerSelect)
+	Menu playerMenu = new Menu(Handle_PlayerSelect)
         playerMenu.SetTitle("Wybierz cheatera do ztrollowania");
-		AddTargetsToMenu(playerMenu, client, true, true);
+	AddTargetsToMenu(playerMenu, client, true, true);
         playerMenu.Display(client, MENU_TIME_FOREVER);
 }
 
@@ -138,9 +130,8 @@ public Handle_PlayerSelect(Menu menu, MenuAction action, int param1, int param2)
 			int userid, target;
 			
 			menu.GetItem(param2, info, sizeof(info));
-			userid = StringToInt(info);		
+			userid = StringToInt(info);
 			
-	
 			if ((target = GetClientOfUserId(userid)) == 0)
 			{
 				PrintToChat(param1, "[SM] Player no longer available");
@@ -158,11 +149,10 @@ public Handle_PlayerSelect(Menu menu, MenuAction action, int param1, int param2)
 			
 			if (IsClientInGame(param1) && !IsClientInKickQueue(param1))
 			{
-				CMD_troll(param1, 0);
+				CMD_Troll(param1, 0);
 			}
 		}
 		case MenuAction_End:
-		//default:
 		{
 			if (menu != null)
 				delete menu;
@@ -178,7 +168,6 @@ public Power(int client)
 	GetClientName(t_Target[client], name, sizeof(name));
 	Format(title, sizeof(title), "Trollowanie %s", name);
 	menu.SetTitle(title);
-	//menu.ExitBackButton = true;
 	
 	AddMenuItem(menu, "0", "normalne obrażenia");
 	AddMenuItem(menu, "1", "brak obrażeń");
@@ -210,19 +199,11 @@ public Handle_Select(Menu playerMenu, MenuAction action, int param1, int param2)
 		}
 		case MenuAction_End:
 		{
-			//if(param2 == MenuEnd_ExitBack) {
-            //    Players(param1);
-            //} else {
 			if (playerMenu != null)
 				delete playerMenu;
-            //}
 		}
 	}   
 }
-
-////////////////////////////////////////////////////
-//Hooks
-////////////////////////////////////////////////////
 
 public OnClientPutInServer(int client)
 {
@@ -269,10 +250,6 @@ public Action OnPlayerTakeDamage(int iPlayer, int &iAttacker, int &iInflictor, f
 	}
     return Plugin_Continue;
 }
-
-////////////////////////////////////////////////////
-//Other
-////////////////////////////////////////////////////
 
 public DoneDMG(int iPlayer, float &flDamage)
 {
