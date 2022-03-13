@@ -1,4 +1,4 @@
-# SC-GO-Troll
+# CS-GO-Troll
 Plugin do serwera CS:GO pozwalający na trollowanie graczy, poprzez redukcje zadawanych przez nich obrażeń
 
 ### Komendy konsolowe
