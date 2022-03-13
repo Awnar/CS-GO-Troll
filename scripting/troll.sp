@@ -57,7 +57,7 @@ public Action CMD_Troll(int client, int args)
 		
 	if (args <= 0)
 	{
-		Players(client);
+		PlayerMenu(client);
 	}
 	else if (args == 1)
 	{
@@ -112,7 +112,7 @@ public Action CMD_Troll(int client, int args)
 	return Plugin_Handled;
 }
 
-public Players(int client)
+public PlayerMenu(int client)
 {
 	Menu playerMenu = new Menu(Handle_PlayerSelect)
         playerMenu.SetTitle("Wybierz cheatera do ztrollowania");
